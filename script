@@ -1,0 +1,53 @@
+// Aguarda o carregamento completo do DOM
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // 1. ROLAGEM SUAVE PARA OS LINKS DO MENU
+    const linksDoMenu = document.querySelectorAll('header nav ul li a');
+    
+    linksDoMenu.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault(); // Impede o comportamento padrão de pulo
+            
+            const targetId = link.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
+            
+            if (targetSection) {
+                targetSection.scrollIntoView({
+                    behavior: 'smooth', // Faz a rolagem ser suave
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // 2. FILTRO DINÂMICO PARA A SEÇÃO DE PROJETOS/CULTURAS
+    // (Útil se você quiser adicionar botões de filtro no seu HTML)
+    const botoesFiltro = document.querySelectorAll('.btn-filtro');
+    const cardsProjetos = document.querySelectorAll('.card');
+
+    botoesFiltro.forEach(botao => {
+        botao.addEventListener('click', () => {
+            // Remove a classe ativo de todos os botões e adiciona no clicado
+            botoesFiltro.forEach(b => b.classList.remove('ativo'));
+            botao.classList.add('ativo');
+
+            const categoriaSelecionada = botao.getAttribute('data-categoria');
+
+            cardsProjetos.forEach(card => {
+                const categoriaCard = card.getAttribute('data-categoria');
+                
+                // Mostra ou esconde o card dependendo da categoria
+                if (categoriaSelecionada === 'todos' || categoriaSelecionada === categoriaCard) {
+                    card.style.display = 'block';
+                    card.style.opacity = '0';
+                    setTimeout(() => card.style.opacity = '1', 50); // Efeito suave de fade-in
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+
+    // 3. ANIMAÇÃO SIMPLES DE BOAS-VINDAS NO CONSOLE
+    console.log("🌱 Portal Agronomia carregado com sucesso! Cultivando o futuro da tecnologia no campo.");
+});
